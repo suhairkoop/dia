@@ -27,3 +27,26 @@ if st.button("Generate Voice"):
 
 
 
+import streamlit as st
+import pyttsx3
+import tempfile
+import os
+
+st.set_page_config(page_title="Nara Dia – Local Voice", layout="centered")
+st.title("🗣️ Nara Dia – Instant Voice Assistant")
+
+text = st.text_area("What should Dia say?", height=100)
+
+if st.button("Speak"):
+    if text.strip():
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 175)
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as fp:
+            engine.save_to_file(text, fp.name)
+            engine.runAndWait()
+            st.audio(fp.name)
+    else:
+        st.warning("Please enter some text first.")
+
+
